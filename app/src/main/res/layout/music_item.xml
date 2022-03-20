@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="dataModel"
+            type="android.support.v4.media.MediaDescriptionCompat" />
+
+        <variable
+            name="callback"
+            type="com.nitin.viewpagertest2.utils.PlayerStateCallback" />
+
+        <variable
+            name="index"
+            type="int" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/parent_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <com.google.android.exoplayer2.ui.StyledPlayerView
+            android:id="@+id/item_video_exoplayer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:item_index="@{index}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:on_state_change="@{callback}"
+            app:progressbar="@{progressBar}"
+            app:resize_mode="fill"
+            app:surface_type="texture_view"
+            app:thumbnail="@{thumbnail}"
+            app:video_url="@{dataModel.mediaUri}" />
+
+        <ImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:background="#fff"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            app:thumbnail="@{dataModel.iconUri}" />
+
+        <ImageView
+            android:id="@+id/volume_control"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:alpha="1"
+            android:animateLayoutChanges="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_volume_up_grey_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
