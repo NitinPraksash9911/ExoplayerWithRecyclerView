@@ -2,6 +2,9 @@ package com.nitin.viewpagertest2.utils
 
 import android.content.Context
 import android.net.Uri
+import android.os.Build
+import android.view.SurfaceView
+import android.view.TextureView
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
@@ -71,26 +74,32 @@ object PlayerViewAdapter {
         item_index: Int? = null,
         autoPlay: Boolean = false
     ) {
-        val player = ExoPlayer.Builder(context).build()
+        val exoPlayer = ExoPlayer.Builder(context).build()
 
-        player.playWhenReady = autoPlay
-        player.repeatMode = Player.REPEAT_MODE_ALL
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
+            exoPlayer.setVideoTextureView(TextureView(context))
+        } else {
+            exoPlayer.setVideoSurfaceView(SurfaceView(context))
+        }
+
+        exoPlayer.playWhenReady = autoPlay
+        exoPlayer.repeatMode = Player.REPEAT_MODE_ALL
         // When changing track, retain the latest frame instead of showing a black screen
         setKeepContentOnPlayerReset(true)
         // We'll show the controller, change to true if want controllers as pause and start
         this.useController = false
         // Provide url to load the video from here
         val mediaSource = buildMediaSource(mediaUri, DefaultDataSource.Factory(context))
-        player.setMediaSource(mediaSource)
+        exoPlayer.setMediaSource(mediaSource)
 
-        player.prepare()
-        this.player = player
+        exoPlayer.prepare()
+        this.player = exoPlayer
 
         // add player with its index to map
         if (playersMap.containsKey(item_index))
             playersMap.remove(item_index)
         if (item_index != null)
-            playersMap[item_index] = player
+            playersMap[item_index] = exoPlayer
 
         this.player!!.addListener(object : Player.Listener {
 
@@ -105,7 +114,7 @@ object PlayerViewAdapter {
                     Player.STATE_IDLE -> {
                     }
                     Player.STATE_BUFFERING -> {
-                        callback.onVideoBuffering(player)
+                        callback.onVideoBuffering(exoPlayer)
                         // Buffering..
                         // set progress bar visible here
                         // set thumbnail visible
@@ -113,9 +122,9 @@ object PlayerViewAdapter {
                         progressbar.visibility = View.VISIBLE
                     }
                     Player.STATE_READY -> {
-                        if (playbackState == Player.STATE_READY && player.playWhenReady) {
+                        if (playbackState == Player.STATE_READY && exoPlayer.playWhenReady) {
                             // [PlayerView] has started playing/resumed the video
-                            callback.onStartedPlaying(player)
+                            callback.onStartedPlaying(exoPlayer)
                         } else {
                             // [PlayerView] has fetched the video duration so this is the block to hide the buffering progress bar
                             progressbar.visibility = View.GONE
@@ -123,7 +132,7 @@ object PlayerViewAdapter {
                             thumbnail.visibility = View.GONE
                             callback.onVideoDurationRetrieved(
                                 this@loadVideo.player!!.duration,
-                                player
+                                exoPlayer
                             )
                         }
 

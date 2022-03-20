@@ -35,7 +35,6 @@
             app:on_state_change="@{callback}"
             app:progressbar="@{progressBar}"
             app:resize_mode="fill"
-            app:surface_type="texture_view"
             app:thumbnail="@{thumbnail}"
             app:video_url="@{dataModel.mediaUri}" />
 
