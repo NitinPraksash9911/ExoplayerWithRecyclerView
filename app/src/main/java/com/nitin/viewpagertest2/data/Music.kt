@@ -1,4 +1,4 @@
-package com.nitin.viewpagertest2
+package com.nitin.viewpagertest2.data
 
 data class Music(
     val mediaId: String = "",

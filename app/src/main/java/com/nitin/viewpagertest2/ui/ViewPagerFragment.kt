@@ -1,4 +1,4 @@
-package com.nitin.viewpagertest2
+package com.nitin.viewpagertest2.ui
 
 import android.net.Uri
 import android.os.Bundle
@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.PagerSnapHelper
+import com.nitin.viewpagertest2.R
+import com.nitin.viewpagertest2.data.Music
 import com.nitin.viewpagertest2.databinding.ViewPagerFragmentBinding
 import com.nitin.viewpagertest2.utils.PlayerViewAdapter
 import com.nitin.viewpagertest2.utils.RecyclerViewScrollListener

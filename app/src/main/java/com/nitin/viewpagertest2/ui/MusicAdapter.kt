@@ -1,4 +1,4 @@
-package com.nitin.viewpagertest2
+package com.nitin.viewpagertest2.ui
 
 import android.support.v4.media.MediaDescriptionCompat
 import android.view.LayoutInflater

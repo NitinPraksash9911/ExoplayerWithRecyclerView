@@ -6,6 +6,6 @@
 
     <fragment
         android:id="@+id/viewPagerFragment"
-        android:name="com.nitin.viewpagertest2.ViewPagerFragment"
+        android:name="com.nitin.viewpagertest2.ui.ViewPagerFragment"
         android:label="ViewPagerFragment" />
 </navigation>
