@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.support.v4.media.MediaDescriptionCompat
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.nitin.viewpagertest2.R
 import com.nitin.viewpagertest2.data.Music
@@ -35,9 +37,12 @@ class ViewPagerFragment : Fragment(R.layout.view_pager_fragment) {
     }
 
     private fun setAdapter() {
-        musicAdapter = MusicAdapter {
+        musicAdapter = MusicAdapter(onItemClickListener = {
 
-        }
+        }, onItemClose = {
+            findNavController().popBackStack()
+            Toast.makeText(requireContext(), "click close", Toast.LENGTH_LONG).show()
+        })
         binding.recyclerView.setHasFixedSize(true)
 
         binding.recyclerView.adapter = musicAdapter
@@ -75,6 +80,15 @@ class ViewPagerFragment : Fragment(R.layout.view_pager_fragment) {
 
     override fun onPause() {
         super.onPause()
+        PlayerViewAdapter.pauseCurrentPlayingVideo()
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
         PlayerViewAdapter.releaseAllPlayers()
     }
 

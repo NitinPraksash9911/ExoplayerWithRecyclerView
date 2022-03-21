@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -23,10 +24,12 @@
         android:layout_height="match_parent">
 
 
-        <com.google.android.exoplayer2.ui.StyledPlayerView
+        <com.google.android.exoplayer2.ui.PlayerView
             android:id="@+id/item_video_exoplayer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:controller_layout_id="@layout/exoplayer_control_view"
+            app:hide_during_ads="true"
             app:item_index="@{index}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -35,7 +38,9 @@
             app:on_state_change="@{callback}"
             app:progressbar="@{progressBar}"
             app:resize_mode="fill"
+            app:songName="@{songNameTv}"
             app:thumbnail="@{thumbnail}"
+            app:use_controller="true"
             app:video_url="@{dataModel.mediaUri}" />
 
         <ImageView
@@ -48,30 +53,68 @@
             android:visibility="gone"
             app:thumbnail="@{dataModel.iconUri}" />
 
-        <ImageView
-            android:id="@+id/volume_control"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="15dp"
-            android:alpha="1"
-            android:animateLayoutChanges="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_volume_up_grey_24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
 
-        <ProgressBar
+        <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:indeterminate="true"
             android:visibility="gone"
+            app:indicatorColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:trackColor="@color/live_red" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/cross_im"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="20dp"
+            android:src="@drawable/ic_cross_white"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/header_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:maxLines="1"
+            android:text="@{dataModel.description}"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/cross_im"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Song Name" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/songNameTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="200dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@{dataModel.title}"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Song Name" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

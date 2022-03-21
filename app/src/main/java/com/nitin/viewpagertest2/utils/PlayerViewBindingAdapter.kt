@@ -8,7 +8,9 @@ import android.view.TextureView
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -18,8 +20,9 @@ import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.dash.DashMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
-import com.google.android.exoplayer2.ui.StyledPlayerView
+import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DefaultDataSource
+import com.nitin.viewpagertest2.R
 
 
 object PlayerViewAdapter {
@@ -47,6 +50,12 @@ object PlayerViewAdapter {
         }
     }
 
+    fun playCurrentVideo() {
+        if (currentPlayingVideo != null) {
+            currentPlayingVideo?.second?.playWhenReady = true
+        }
+    }
+
     fun playIndexThenPausePreviousPlayer(index: Int) {
         if (playersMap.get(index)?.playWhenReady == false) {
             pauseCurrentPlayingVideo()
@@ -56,23 +65,29 @@ object PlayerViewAdapter {
 
     }
 
-    /*
-    *  url is a url of stream video
-    *  progressbar for show when start buffering stream
-    * thumbnail for show before video start
-    * */
+
+    /**
+     * @param mediaUri is uri of media to be played
+     * @param callback is a playerState callback which state of player such as ready, idle etc...
+     * @param progressbar it shows the progress bar while buffering video/audio
+     * @param thumbnail is used to show image while video/audio is buffering
+     * @param item_index is current item index in viewHolder
+     * @param autoPlay is used to set if we want auto play or not
+     * @param songNameTV is the TextVew which show the title of media
+     * */
     @JvmStatic
     @BindingAdapter(
-        value = ["video_url", "on_state_change", "progressbar", "thumbnail", "item_index", "autoPlay"],
+        value = ["video_url", "on_state_change", "progressbar", "thumbnail", "item_index", "autoPlay", "songName"],
         requireAll = false
     )
-    fun StyledPlayerView.loadVideo(
+    fun PlayerView.loadVideo(
         mediaUri: Uri,
         callback: PlayerStateCallback,
         progressbar: ProgressBar,
         thumbnail: ImageView,
         item_index: Int? = null,
-        autoPlay: Boolean = false
+        autoPlay: Boolean = false,
+        songNameTV: TextView
     ) {
         val exoPlayer = ExoPlayer.Builder(context).build()
 
@@ -83,11 +98,9 @@ object PlayerViewAdapter {
         }
 
         exoPlayer.playWhenReady = autoPlay
-        exoPlayer.repeatMode = Player.REPEAT_MODE_ALL
+//        exoPlayer.repeatMode = Player.REPEAT_MODE_ALL
         // When changing track, retain the latest frame instead of showing a black screen
         setKeepContentOnPlayerReset(true)
-        // We'll show the controller, change to true if want controllers as pause and start
-        this.useController = false
         // Provide url to load the video from here
         val mediaSource = buildMediaSource(mediaUri, DefaultDataSource.Factory(context))
         exoPlayer.setMediaSource(mediaSource)
@@ -101,7 +114,26 @@ object PlayerViewAdapter {
         if (item_index != null)
             playersMap[item_index] = exoPlayer
 
+
+        this.setControllerVisibilityListener {
+            if (it == View.VISIBLE) {
+                songNameTV.visibility = View.VISIBLE
+            } else {
+                songNameTV.visibility = View.GONE
+            }
+        }
+
+        //set the art work for audio only
+        if (mediaUri.lastPathSegment!!.contains("mp3")) {
+            this.defaultArtwork = ContextCompat.getDrawable(context, R.drawable.audio_art_work)
+        }
+
         this.player!!.addListener(object : Player.Listener {
+
+            override fun onIsPlayingChanged(isPlaying: Boolean) {
+                super.onIsPlayingChanged(isPlaying)
+                this@loadVideo.keepScreenOn = isPlaying
+            }
 
             override fun onPlayerError(error: PlaybackException) {
                 super.onPlayerError(error)
@@ -112,32 +144,27 @@ object PlayerViewAdapter {
                 super.onPlaybackStateChanged(playbackState)
                 when (playbackState) {
                     Player.STATE_IDLE -> {
+                        this@loadVideo.keepScreenOn = false
                     }
                     Player.STATE_BUFFERING -> {
                         callback.onVideoBuffering(exoPlayer)
-                        // Buffering..
-                        // set progress bar visible here
-                        // set thumbnail visible
-                        thumbnail.visibility = View.VISIBLE
+                        this@loadVideo.keepScreenOn = true
                         progressbar.visibility = View.VISIBLE
                     }
                     Player.STATE_READY -> {
-                        if (playbackState == Player.STATE_READY && exoPlayer.playWhenReady) {
-                            // [PlayerView] has started playing/resumed the video
-                            callback.onStartedPlaying(exoPlayer)
-                        } else {
-                            // [PlayerView] has fetched the video duration so this is the block to hide the buffering progress bar
-                            progressbar.visibility = View.GONE
-                            // set thumbnail gone
-                            thumbnail.visibility = View.GONE
-                            callback.onVideoDurationRetrieved(
-                                this@loadVideo.player!!.duration,
-                                exoPlayer
-                            )
-                        }
+                        this@loadVideo.keepScreenOn = true
+                        progressbar.visibility = View.GONE
+                        thumbnail.visibility = View.GONE
+                        callback.onVideoDurationRetrieved(
+                            this@loadVideo.player!!.duration,
+                            exoPlayer
+                        )
 
                     }
                     Player.STATE_ENDED -> {
+                        this@loadVideo.keepScreenOn = false
+                        progressbar.visibility = View.GONE
+                        thumbnail.visibility = View.GONE
                     }
                 }
             }
@@ -162,7 +189,6 @@ object PlayerViewAdapter {
         }
     }
 
-    // extension function for show toast
     fun Context.toast(text: String) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }

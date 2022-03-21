@@ -3,8 +3,27 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../.gradle/caches/transforms-3/a8803832f2d24632b6707b6a074463a2/transformed/exoplayer-ui-2.17.1/res/drawable-anydpi-v21/exo_ic_play_circle_filled.xml" value="0.219" />
+        <entry key="../../.gradle/caches/transforms-3/a8803832f2d24632b6707b6a074463a2/transformed/exoplayer-ui-2.17.1/res/layout-v23/exo_styled_player_control_ffwd_button.xml" value="0.31567028985507245" />
+        <entry key="../../.gradle/caches/transforms-3/a8803832f2d24632b6707b6a074463a2/transformed/exoplayer-ui-2.17.1/res/layout-v23/exo_styled_player_control_rewind_button.xml" value="0.31567028985507245" />
+        <entry key="../../.gradle/caches/transforms-3/a8803832f2d24632b6707b6a074463a2/transformed/exoplayer-ui-2.17.1/res/layout/exo_player_control_view.xml" value="0.1" />
+        <entry key="../../.gradle/caches/transforms-3/a8803832f2d24632b6707b6a074463a2/transformed/exoplayer-ui-2.17.1/res/layout/exo_player_view.xml" value="0.31567028985507245" />
+        <entry key="../../.gradle/caches/transforms-3/a8803832f2d24632b6707b6a074463a2/transformed/exoplayer-ui-2.17.1/res/layout/exo_styled_player_control_view.xml" value="0.1" />
+        <entry key="../../.gradle/caches/transforms-3/a8803832f2d24632b6707b6a074463a2/transformed/exoplayer-ui-2.17.1/res/layout/exo_styled_player_view.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/bg_round_rect_white_50.xml" value="0.219" />
+        <entry key="app/src/main/res/drawable/bg_rounded_rectangle_white_corner_rounded.xml" value="0.219" />
+        <entry key="app/src/main/res/drawable/circular_progress.xml" value="0.219" />
+        <entry key="app/src/main/res/drawable/gradient_transparent_middle.xml" value="0.219" />
+        <entry key="app/src/main/res/drawable/ic_cross_white.xml" value="0.219" />
+        <entry key="app/src/main/res/drawable/ic_down_arrow.xml" value="0.219" />
+        <entry key="app/src/main/res/drawable/ic_exo_icon_fastforward.xml" value="0.219" />
+        <entry key="app/src/main/res/drawable/ic_exo_icon_pause.xml" value="0.219" />
+        <entry key="app/src/main/res/drawable/ic_exo_icon_play.xml" value="0.219" />
+        <entry key="app/src/main/res/drawable/ic_exo_icon_rewind.xml" value="0.219" />
+        <entry key="app/src/main/res/drawable/ic_views.xml" value="0.219" />
         <entry key="app/src/main/res/drawable/ic_volume_off_grey_24dp.xml" value="0.219" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.31567028985507245" />
+        <entry key="app/src/main/res/layout/exoplayer_control_view.xml" value="0.3748489379882813" />
         <entry key="app/src/main/res/layout/ic_volume_off_grey_24dp.xml" value="0.31567028985507245" />
         <entry key="app/src/main/res/layout/music_item.xml" value="0.31567028985507245" />
         <entry key="app/src/main/res/layout/view_pager_fragment.xml" value="0.31567028985507245" />
@@ -16,5 +35,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.31567028985507245" />
+      </ProjectState>
+    </option>
   </component>
 </project>
