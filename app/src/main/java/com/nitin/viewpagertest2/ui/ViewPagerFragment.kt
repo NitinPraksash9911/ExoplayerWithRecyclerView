@@ -7,8 +7,9 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.nitin.viewpagertest2.R
 import com.nitin.viewpagertest2.data.Music
 import com.nitin.viewpagertest2.databinding.ViewPagerFragmentBinding
@@ -40,13 +41,13 @@ class ViewPagerFragment : Fragment(R.layout.view_pager_fragment) {
         musicAdapter = MusicAdapter(onItemClickListener = {
 
         }, onItemClose = {
-            findNavController().popBackStack()
             Toast.makeText(requireContext(), "click close", Toast.LENGTH_LONG).show()
         })
         binding.recyclerView.setHasFixedSize(true)
 
         binding.recyclerView.adapter = musicAdapter
 
+        binding.recyclerView.layoutManager
         PagerSnapHelper().attachToRecyclerView(binding.recyclerView)
         musicAdapter.submitList(songs)
 
@@ -96,21 +97,22 @@ class ViewPagerFragment : Fragment(R.layout.view_pager_fragment) {
     private fun setMusicList() = listOf<Music>(
         Music(
             "1",
-            "SoundHelix-Song-5",
+            "https://images.pexels.com/photos/4725133/pexels-photo-4725133.jpeg",
             "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8",
             "SongId1",
             "Hls Video"
         ),
         Music(
             "2",
-            "SoundHelix-Song-11",
+            "https://images.pexels.com/photos/2100063/pexels-photo-2100063.jpeg",
+
             "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3",
             "SongId2",
             "Mp3 Audio"
         ),
         Music(
             "3",
-            "SoundHelix-Song-14",
+            "https://images.pexels.com/photos/3348748/pexels-photo-3348748.jpeg",
             "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-14.mp3",
             "SongId3",
             "Mp3 Audio"

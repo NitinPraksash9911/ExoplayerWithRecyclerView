@@ -10,7 +10,6 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -21,8 +20,8 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.dash.DashMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.ui.R
 import com.google.android.exoplayer2.upstream.DefaultDataSource
-import com.nitin.viewpagertest2.R
 
 
 object PlayerViewAdapter {
@@ -70,21 +69,21 @@ object PlayerViewAdapter {
      * @param mediaUri is uri of media to be played
      * @param callback is a playerState callback which state of player such as ready, idle etc...
      * @param progressbar it shows the progress bar while buffering video/audio
-     * @param thumbnail is used to show image while video/audio is buffering
+     * @param thumbnailUri is used to show image while video/audio is buffering
      * @param item_index is current item index in viewHolder
      * @param autoPlay is used to set if we want auto play or not
      * @param songNameTV is the TextVew which show the title of media
      * */
     @JvmStatic
     @BindingAdapter(
-        value = ["video_url", "on_state_change", "progressbar", "thumbnail", "item_index", "autoPlay", "songName"],
+        value = ["video_url", "on_state_change", "progressbar", "thumbnailUri", "item_index", "autoPlay", "songName"],
         requireAll = false
     )
     fun PlayerView.loadVideo(
         mediaUri: Uri,
         callback: PlayerStateCallback,
         progressbar: ProgressBar,
-        thumbnail: ImageView,
+        thumbnailUri: Uri,
         item_index: Int? = null,
         autoPlay: Boolean = false,
         songNameTV: TextView
@@ -106,6 +105,7 @@ object PlayerViewAdapter {
         exoPlayer.setMediaSource(mediaSource)
 
         exoPlayer.prepare()
+
         this.player = exoPlayer
 
         // add player with its index to map
@@ -114,6 +114,8 @@ object PlayerViewAdapter {
         if (item_index != null)
             playersMap[item_index] = exoPlayer
 
+
+        this.controllerShowTimeoutMs = 1500
 
         this.setControllerVisibilityListener {
             if (it == View.VISIBLE) {
@@ -124,8 +126,12 @@ object PlayerViewAdapter {
         }
 
         //set the art work for audio only
+        val imageView = this.findViewById<ImageView>(R.id.exo_artwork)
         if (mediaUri.lastPathSegment!!.contains("mp3")) {
-            this.defaultArtwork = ContextCompat.getDrawable(context, R.drawable.audio_art_work)
+            this.useArtwork = true
+            imageView.loadImage(thumbnailUri) {
+                this.defaultArtwork = it
+            }
         }
 
         this.player!!.addListener(object : Player.Listener {
@@ -138,6 +144,8 @@ object PlayerViewAdapter {
             override fun onPlayerError(error: PlaybackException) {
                 super.onPlayerError(error)
                 this@loadVideo.context.toast("Oops! Error occurred while playing media.")
+                this@loadVideo.keepScreenOn = false
+                progressbar.visibility = View.GONE
             }
 
             override fun onPlaybackStateChanged(playbackState: Int) {
@@ -154,7 +162,6 @@ object PlayerViewAdapter {
                     Player.STATE_READY -> {
                         this@loadVideo.keepScreenOn = true
                         progressbar.visibility = View.GONE
-                        thumbnail.visibility = View.GONE
                         callback.onVideoDurationRetrieved(
                             this@loadVideo.player!!.duration,
                             exoPlayer
@@ -164,7 +171,6 @@ object PlayerViewAdapter {
                     Player.STATE_ENDED -> {
                         this@loadVideo.keepScreenOn = false
                         progressbar.visibility = View.GONE
-                        thumbnail.visibility = View.GONE
                     }
                 }
             }

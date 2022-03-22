@@ -24,6 +24,9 @@
         android:layout_height="match_parent">
 
 
+
+
+
         <com.google.android.exoplayer2.ui.PlayerView
             android:id="@+id/item_video_exoplayer"
             android:layout_width="match_parent"
@@ -39,19 +42,10 @@
             app:progressbar="@{progressBar}"
             app:resize_mode="fill"
             app:songName="@{songNameTv}"
-            app:thumbnail="@{thumbnail}"
+            app:thumbnailUri="@{dataModel.iconUri}"
             app:use_controller="true"
             app:video_url="@{dataModel.mediaUri}" />
 
-        <ImageView
-            android:id="@+id/thumbnail"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:background="#fff"
-            android:scaleType="centerCrop"
-            android:visibility="gone"
-            app:thumbnail="@{dataModel.iconUri}" />
 
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -115,6 +109,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Song Name" />
+
+        <ImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:adjustViewBounds="true"
+            android:background="#fff"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:scaleType="centerCrop"
+            />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

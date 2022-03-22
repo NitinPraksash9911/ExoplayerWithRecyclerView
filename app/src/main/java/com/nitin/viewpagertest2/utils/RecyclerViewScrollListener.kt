@@ -29,6 +29,7 @@ abstract class RecyclerViewScrollListener : RecyclerView.OnScrollListener() {
      * @param recyclerView - related recycler view.
      */
     abstract fun onItemIsFirstVisibleItem(index: Int)
+
     fun disableScrollListener() {
         mEnabled = false
     }
