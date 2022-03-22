@@ -3,6 +3,7 @@ package com.nitin.viewpagertest2.utils
 import android.content.Context
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import android.view.SurfaceView
 import android.view.TextureView
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.setPadding
 import androidx.databinding.BindingAdapter
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -22,6 +24,7 @@ import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.ui.R
 import com.google.android.exoplayer2.upstream.DefaultDataSource
+import kotlin.math.roundToInt
 
 
 object PlayerViewAdapter {
@@ -31,6 +34,7 @@ object PlayerViewAdapter {
 
     // for hold current player
     private var currentPlayingVideo: Pair<Int, ExoPlayer>? = null
+
     fun releaseAllPlayers() {
         playersMap.map {
             it.value.release()
@@ -56,10 +60,10 @@ object PlayerViewAdapter {
     }
 
     fun playIndexThenPausePreviousPlayer(index: Int) {
-        if (playersMap.get(index)?.playWhenReady == false) {
+        if (playersMap[index]?.playWhenReady == false) {
             pauseCurrentPlayingVideo()
-            playersMap.get(index)?.playWhenReady = true
-            currentPlayingVideo = Pair(index, playersMap.get(index)!!)
+            playersMap[index]?.playWhenReady = true
+            currentPlayingVideo = Pair(index, playersMap[index]!!)
         }
 
     }
@@ -97,9 +101,10 @@ object PlayerViewAdapter {
         }
 
         exoPlayer.playWhenReady = autoPlay
-//        exoPlayer.repeatMode = Player.REPEAT_MODE_ALL
+
         // When changing track, retain the latest frame instead of showing a black screen
         setKeepContentOnPlayerReset(true)
+
         // Provide url to load the video from here
         val mediaSource = buildMediaSource(mediaUri, DefaultDataSource.Factory(context))
         exoPlayer.setMediaSource(mediaSource)
@@ -125,26 +130,45 @@ object PlayerViewAdapter {
             }
         }
 
-        //set the art work for audio only
-        val imageView = this.findViewById<ImageView>(R.id.exo_artwork)
-        if (mediaUri.lastPathSegment!!.contains("mp3")) {
-            this.useArtwork = true
-            imageView.loadImage(thumbnailUri) {
-                this.defaultArtwork = it
-            }
-        }
+        this.loadArtWorkIfMp3(mediaUri, thumbnailUri)
 
-        this.player!!.addListener(object : Player.Listener {
+        this.player!!.addPlayerListener(this, progressbar, callback, exoPlayer)
+
+    }
+
+
+    private fun PlayerView.loadArtWorkIfMp3(mediaUri: Uri, thumbnailUri: Uri) {
+        try {
+            val imageView = this.findViewById<ImageView>(R.id.exo_artwork)
+            if (mediaUri.lastPathSegment!!.contains("mp3")) {
+                this.useArtwork = true
+                imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
+                imageView.loadImage(thumbnailUri) {
+                    this.defaultArtwork = it
+                }
+            }
+        } catch (e: Exception) {
+            Log.d("artwork", "exo_artwork not found")
+        }
+    }
+
+    private fun Player.addPlayerListener(
+        playerView: PlayerView,
+        progressbar: ProgressBar,
+        callback: PlayerStateCallback,
+        exoPlayer: ExoPlayer
+    ) {
+        this.addListener(object : Player.Listener {
 
             override fun onIsPlayingChanged(isPlaying: Boolean) {
                 super.onIsPlayingChanged(isPlaying)
-                this@loadVideo.keepScreenOn = isPlaying
+                playerView.keepScreenOn = isPlaying
             }
 
             override fun onPlayerError(error: PlaybackException) {
                 super.onPlayerError(error)
-                this@loadVideo.context.toast("Oops! Error occurred while playing media.")
-                this@loadVideo.keepScreenOn = false
+                playerView.context.toast("Oops! Error occurred while playing media.")
+                playerView.keepScreenOn = false
                 progressbar.visibility = View.GONE
             }
 
@@ -152,31 +176,31 @@ object PlayerViewAdapter {
                 super.onPlaybackStateChanged(playbackState)
                 when (playbackState) {
                     Player.STATE_IDLE -> {
-                        this@loadVideo.keepScreenOn = false
+                        playerView.keepScreenOn = false
                     }
                     Player.STATE_BUFFERING -> {
                         callback.onVideoBuffering(exoPlayer)
-                        this@loadVideo.keepScreenOn = true
+                        playerView.keepScreenOn = true
                         progressbar.visibility = View.VISIBLE
                     }
                     Player.STATE_READY -> {
-                        this@loadVideo.keepScreenOn = true
+                        playerView.keepScreenOn = true
                         progressbar.visibility = View.GONE
                         callback.onVideoDurationRetrieved(
-                            this@loadVideo.player!!.duration,
+                            playerView.player!!.duration,
                             exoPlayer
                         )
 
                     }
                     Player.STATE_ENDED -> {
-                        this@loadVideo.keepScreenOn = false
+                        playerView.keepScreenOn = false
                         progressbar.visibility = View.GONE
                     }
                 }
             }
         })
-
     }
+
 
     private fun buildMediaSource(
         uri: Uri,

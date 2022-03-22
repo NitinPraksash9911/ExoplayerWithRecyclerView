@@ -20,6 +20,7 @@
         <entry key="app/src/main/res/drawable/ic_exo_icon_pause.xml" value="0.219" />
         <entry key="app/src/main/res/drawable/ic_exo_icon_play.xml" value="0.219" />
         <entry key="app/src/main/res/drawable/ic_exo_icon_rewind.xml" value="0.219" />
+        <entry key="app/src/main/res/drawable/ic_music.xml" value="0.219" />
         <entry key="app/src/main/res/drawable/ic_views.xml" value="0.219" />
         <entry key="app/src/main/res/drawable/ic_volume_off_grey_24dp.xml" value="0.219" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.31567028985507245" />

@@ -2,6 +2,7 @@ package com.nitin.viewpagertest2.utils
 
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.util.Log
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
@@ -17,21 +18,20 @@ fun ImageView.loadImage(imgUrl: Uri?, onLoadSuccess: (resource: Drawable) -> Uni
     val requestOption = RequestOptions()
         .placeholder(R.drawable.ic_music)
         .error(R.drawable.ic_music)
-        .centerInside()
 
     Glide.with(this.context)
         .load(imgUrl)
         .transition(DrawableTransitionOptions.withCrossFade())
-        .centerCrop()
         .apply(requestOption)
+        .centerInside()
         .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-        .listener(MyImageRequestListener(object : MyImageRequestListener.Callback {
+        .listener(GlideImageRequestListener(object : GlideImageRequestListener.Callback {
             override fun onFailure(message: String?) {
-//                Toast.makeText(this@loadImage.context, message, Toast.LENGTH_LONG).show()
+                Log.d("loadImage", "onFailure:-> $message")
             }
 
             override fun onSuccess(dataSource: String, resource: Drawable) {
-//                Toast.makeText(this@loadImage.context, dataSource, Toast.LENGTH_LONG).show()
+                Log.d("loadImage", "onSuccess:-> load from $dataSource")
                 onLoadSuccess(resource)
             }
 

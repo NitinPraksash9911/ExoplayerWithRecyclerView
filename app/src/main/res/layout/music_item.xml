@@ -112,14 +112,15 @@
 
         <ImageView
             android:id="@+id/thumbnail"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:background="#fff"
             android:visibility="gone"
+            android:src="@drawable/ic_music"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:scaleType="centerCrop"
+            android:scaleType="centerInside"
             />
 
 
