@@ -24,7 +24,7 @@
         <entry key="app/src/main/res/drawable/ic_views.xml" value="0.219" />
         <entry key="app/src/main/res/drawable/ic_volume_off_grey_24dp.xml" value="0.219" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.31567028985507245" />
-        <entry key="app/src/main/res/layout/exoplayer_control_view.xml" value="0.3748489379882813" />
+        <entry key="app/src/main/res/layout/exoplayer_control_view.xml" value="0.25" />
         <entry key="app/src/main/res/layout/ic_volume_off_grey_24dp.xml" value="0.31567028985507245" />
         <entry key="app/src/main/res/layout/music_item.xml" value="0.31567028985507245" />
         <entry key="app/src/main/res/layout/view_pager_fragment.xml" value="0.31567028985507245" />

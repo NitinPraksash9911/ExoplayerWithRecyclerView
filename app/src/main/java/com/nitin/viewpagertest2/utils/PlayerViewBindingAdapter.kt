@@ -11,7 +11,6 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.view.setPadding
 import androidx.databinding.BindingAdapter
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -24,7 +23,6 @@ import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.ui.R
 import com.google.android.exoplayer2.upstream.DefaultDataSource
-import kotlin.math.roundToInt
 
 
 object PlayerViewAdapter {
@@ -140,12 +138,10 @@ object PlayerViewAdapter {
     private fun PlayerView.loadArtWorkIfMp3(mediaUri: Uri, thumbnailUri: Uri) {
         try {
             val imageView = this.findViewById<ImageView>(R.id.exo_artwork)
-            if (mediaUri.lastPathSegment!!.contains("mp3")) {
-                this.useArtwork = true
-                imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
-                imageView.loadImage(thumbnailUri) {
-                    this.defaultArtwork = it
-                }
+            this.useArtwork = true
+            imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
+            imageView.loadImage(thumbnailUri) {
+                this.defaultArtwork = it
             }
         } catch (e: Exception) {
             Log.d("artwork", "exo_artwork not found")
@@ -195,6 +191,8 @@ object PlayerViewAdapter {
                     Player.STATE_ENDED -> {
                         playerView.keepScreenOn = false
                         progressbar.visibility = View.GONE
+                        seekTo(0)
+                        pause()
                     }
                 }
             }
