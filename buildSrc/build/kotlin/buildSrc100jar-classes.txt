@@ -1,0 +1,1 @@
+/Users/trell/AndroidStudioProjects/ViewPagerTest2/buildSrc/build/classes/kotlin/main/BuildManager.class

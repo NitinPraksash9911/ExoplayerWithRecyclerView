@@ -7,7 +7,6 @@ abstract class RecyclerViewScrollListener : RecyclerView.OnScrollListener() {
     private var firstVisibleItem = 0
     private var visibleItemCount = 0
 
-
     @Volatile
     private var mEnabled = true
     private var mPreLoadCount = 0

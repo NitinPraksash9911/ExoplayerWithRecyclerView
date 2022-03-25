@@ -7,6 +7,8 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.DrawableCrossFadeTransition
 
+private const val ANIM_DURATION = 1000
+
 class GlideImageRequestListener(private val callback: Callback? = null) : RequestListener<Drawable> {
 
     interface Callback {
@@ -31,16 +33,13 @@ class GlideImageRequestListener(private val callback: Callback? = null) : Reques
         dataSource: DataSource?,
         isFirstResource: Boolean
     ): Boolean {
-
         resource?.let {
             target?.onResourceReady(
                 it,
-                DrawableCrossFadeTransition(1000, isFirstResource)
+                DrawableCrossFadeTransition(ANIM_DURATION, isFirstResource)
             )
         }
-        callback?.onSuccess(dataSource.toString(),resource!!)
+        callback?.onSuccess(dataSource.toString(), resource!!)
         return true
     }
-
-
 }

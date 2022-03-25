@@ -16,7 +16,6 @@ import dagger.hilt.android.scopes.FragmentScoped
 @InstallIn(FragmentComponent::class)
 object FragmentModule {
 
-
     @FragmentScoped
     @Provides
     fun provideAudioAttribute() = AudioAttributes.Builder()
@@ -32,12 +31,9 @@ object FragmentModule {
             setHandleAudioBecomingNoisy(true)
         }
 
-
     @FragmentScoped
     @Provides
     fun provideDataSourceFactor(@ApplicationContext context: Context): DefaultDataSource.Factory {
         return DefaultDataSource.Factory(context)
-
     }
-
 }

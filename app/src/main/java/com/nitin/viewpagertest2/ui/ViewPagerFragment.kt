@@ -11,16 +11,14 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import com.nitin.viewpagertest2.R
 import com.nitin.viewpagertest2.data.Music
 import com.nitin.viewpagertest2.databinding.ViewPagerFragmentBinding
-import com.nitin.viewpagertest2.utils.PlayerViewAdapter
+import com.nitin.viewpagertest2.utils.PlayerViewBindingAdapter
 import com.nitin.viewpagertest2.utils.RecyclerViewScrollListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ViewPagerFragment : Fragment(R.layout.view_pager_fragment) {
 
-
     private lateinit var scrollListener: RecyclerViewScrollListener
-
 
     private lateinit var musicAdapter: MusicAdapter
     lateinit var binding: ViewPagerFragmentBinding
@@ -29,12 +27,10 @@ class ViewPagerFragment : Fragment(R.layout.view_pager_fragment) {
         super.onViewCreated(view, savedInstanceState)
         binding = ViewPagerFragmentBinding.bind(view)
         setAdapter()
-
     }
 
     private fun setAdapter() {
         musicAdapter = MusicAdapter(onItemClickListener = {
-
         }, onItemClose = {
             Toast.makeText(requireContext(), "click close", Toast.LENGTH_LONG).show()
         })
@@ -44,23 +40,23 @@ class ViewPagerFragment : Fragment(R.layout.view_pager_fragment) {
 
         PagerSnapHelper().attachToRecyclerView(binding.recyclerView)
 
-        musicAdapter.submitList(getMusicList().map {
-            it.asMetaDataDesc()
-        })
+        musicAdapter.submitList(
+            getMusicList().map {
+                it.asMetaDataDesc()
+            }
+        )
 
         scrollListener = object : RecyclerViewScrollListener() {
             override fun onItemIsFirstVisibleItem(index: Int) {
                 Log.d("visible item index", index.toString())
                 // play just visible item
-                if (index != -1)
-                    PlayerViewAdapter.playIndexThenPausePreviousPlayer(index)
+                if (index != -1) {
+                    PlayerViewBindingAdapter.playIndexThenPausePreviousPlayer(index)
+                }
             }
-
         }
         binding.recyclerView.addOnScrollListener(scrollListener)
-
     }
-
 
     private fun Music.asMetaDataDesc(): MediaDescriptionCompat {
         return MediaDescriptionCompat.Builder()
@@ -70,20 +66,17 @@ class ViewPagerFragment : Fragment(R.layout.view_pager_fragment) {
             .setTitle(this.title)
             .setIconUri(Uri.parse(this.defaultThumbnail))
             .build()
-
     }
 
     override fun onPause() {
         super.onPause()
-        PlayerViewAdapter.pauseCurrentPlayingVideo()
+        PlayerViewBindingAdapter.pauseCurrentPlayingVideo()
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
-        PlayerViewAdapter.releaseAllPlayers()
+        PlayerViewBindingAdapter.releaseAllPlayers()
     }
-
 
     private fun getMusicList() = listOf<Music>(
         Music(
@@ -116,7 +109,5 @@ class ViewPagerFragment : Fragment(R.layout.view_pager_fragment) {
             "Mp4 Video"
         ),
 
-
-        )
-
+    )
 }

@@ -1,7 +1,7 @@
 package com.nitin.viewpagertest2.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.nitin.viewpagertest2.R
 import dagger.hilt.android.AndroidEntryPoint
 

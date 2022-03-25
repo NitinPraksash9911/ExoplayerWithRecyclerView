@@ -13,6 +13,16 @@ plugins {
     id 'com.android.application' version '7.1.2' apply false
     id 'com.android.library' version '7.1.2' apply false
     id 'org.jetbrains.kotlin.android' version '1.5.30' apply false
+    id 'io.gitlab.arturbosch.detekt' version '1.19.0'
+    id 'org.jlleitschuh.gradle.ktlint' version '10.2.1'
+}
+
+apply (from: teamPropsFile('git-hooks.gradle') )
+apply (from: teamPropsFile('static-analysis.gradle') )
+
+def teamPropsFile(propsFile) {
+    def teamPropsDir = file('team-props')
+    return new File(teamPropsDir, propsFile)
 }
 
 task clean(type: Delete) {

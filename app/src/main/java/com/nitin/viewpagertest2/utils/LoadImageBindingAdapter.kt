@@ -11,10 +11,9 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.nitin.viewpagertest2.R
 
-
+// ktlint-disable Unexpected indentation
 @BindingAdapter(value = ["imageUri", "successCallback"], requireAll = false)
 fun ImageView.loadImage(imgUrl: Uri?, onLoadSuccess: (resource: Drawable) -> Unit = {}) {
-
     val requestOption = RequestOptions()
         .placeholder(R.drawable.ic_music)
         .error(R.drawable.ic_music)
@@ -25,7 +24,8 @@ fun ImageView.loadImage(imgUrl: Uri?, onLoadSuccess: (resource: Drawable) -> Uni
         .apply(requestOption)
         .centerInside()
         .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-        .listener(GlideImageRequestListener(object : GlideImageRequestListener.Callback {
+        .listener(
+        GlideImageRequestListener(object : GlideImageRequestListener.Callback {
             override fun onFailure(message: String?) {
                 Log.d("loadImage", "onFailure:-> $message")
             }
@@ -34,7 +34,7 @@ fun ImageView.loadImage(imgUrl: Uri?, onLoadSuccess: (resource: Drawable) -> Uni
                 Log.d("loadImage", "onSuccess:-> load from $dataSource")
                 onLoadSuccess(resource)
             }
-
-        }))
+        })
+    )
         .into(this)
 }
