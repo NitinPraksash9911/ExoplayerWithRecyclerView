@@ -24,15 +24,11 @@
         android:layout_height="match_parent">
 
 
-
-
-
         <com.google.android.exoplayer2.ui.PlayerView
             android:id="@+id/item_video_exoplayer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:controller_layout_id="@layout/exoplayer_control_view"
-            app:hide_during_ads="true"
             app:item_index="@{index}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -45,7 +41,6 @@
             app:thumbnailUri="@{dataModel.iconUri}"
             app:use_controller="true"
             app:video_url="@{dataModel.mediaUri}" />
-
 
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -116,12 +111,151 @@
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:background="#fff"
-            android:visibility="gone"
-            android:src="@drawable/ic_music"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:scaleType="centerInside"
-            />
+            android:src="@drawable/ic_music"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/reactionLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:background="@drawable/bottom_gradient_music_corner"
+            >
+
+            <LinearLayout
+                android:id="@+id/likeContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:background="?selectableItemBackground"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/_16sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/likeImage"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginBottom="4dp"
+                    android:src="@drawable/ic_reactions_liked"
+                    tools:src="@drawable/ic_reactions_liked" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/likeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Like"
+                    android:textColor="@android:color/white"
+                    android:textSize="13sp"
+                    tools:text="Like" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/clapContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="?selectableItemBackground"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/_16sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/likeContainer"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/clapImage"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginBottom="@dimen/_4sdp"
+                    android:src="@drawable/ic_reactions_clap"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/ic_reactions_clap" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/clapText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Clap"
+                    android:textColor="@android:color/white"
+                    android:textSize="13sp"
+                    tools:text="celebrate" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/inspireContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="?selectableItemBackground"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/_16sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/clapContainer"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/inspireImage"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginBottom="@dimen/_4sdp"
+                    android:src="@drawable/ic_reactions_inspire"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/ic_reactions_inspire" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/inspireText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    android:text="Inspire"
+                    android:textColor="@android:color/white"
+                    android:textSize="13sp"
+                    tools:text="Inspire" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/shareContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:background="?selectableItemBackground"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/_16sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/shareImage"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginBottom="@dimen/_4sdp"
+                    android:src="@drawable/ic_story_share"
+                    tools:src="@drawable/ic_story_share" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/shareText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="share"
+                    android:textColor="@android:color/white"
+                    android:textSize="13sp"
+                    tools:text="Share" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

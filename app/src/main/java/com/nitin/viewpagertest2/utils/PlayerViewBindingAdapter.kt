@@ -15,6 +15,7 @@ import androidx.databinding.BindingAdapter
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.PlaybackException
+import com.google.android.exoplayer2.PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
@@ -106,7 +107,6 @@ object PlayerViewAdapter {
         // Provide url to load the video from here
         val mediaSource = buildMediaSource(mediaUri, DefaultDataSource.Factory(context))
         exoPlayer.setMediaSource(mediaSource)
-
         exoPlayer.prepare()
 
         this.player = exoPlayer
@@ -138,10 +138,12 @@ object PlayerViewAdapter {
     private fun PlayerView.loadArtWorkIfMp3(mediaUri: Uri, thumbnailUri: Uri) {
         try {
             val imageView = this.findViewById<ImageView>(R.id.exo_artwork)
-            this.useArtwork = true
-            imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
-            imageView.loadImage(thumbnailUri) {
-                this.defaultArtwork = it
+            if (mediaUri.lastPathSegment!!.contains("mp3")) {
+                this.useArtwork = true
+                imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
+                imageView.loadImage(thumbnailUri) {
+                    this.defaultArtwork = it
+                }
             }
         } catch (e: Exception) {
             Log.d("artwork", "exo_artwork not found")
@@ -159,11 +161,16 @@ object PlayerViewAdapter {
             override fun onIsPlayingChanged(isPlaying: Boolean) {
                 super.onIsPlayingChanged(isPlaying)
                 playerView.keepScreenOn = isPlaying
+                if (isPlaying) {
+                    callback.onStartedPlaying(this@addPlayerListener)
+                }
             }
 
             override fun onPlayerError(error: PlaybackException) {
                 super.onPlayerError(error)
-                playerView.context.toast("Oops! Error occurred while playing media.")
+                if (error.errorCode == ERROR_CODE_IO_NETWORK_CONNECTION_FAILED) {
+                    playerView.context.toast("Oops! No Network")
+                }
                 playerView.keepScreenOn = false
                 progressbar.visibility = View.GONE
             }
@@ -191,8 +198,9 @@ object PlayerViewAdapter {
                     Player.STATE_ENDED -> {
                         playerView.keepScreenOn = false
                         progressbar.visibility = View.GONE
-                        seekTo(0)
+                        callback.onFinishedPlaying(this@addPlayerListener)
                         pause()
+                        seekTo(0)
                     }
                 }
             }

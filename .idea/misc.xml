@@ -12,6 +12,7 @@
         <entry key="../../.gradle/caches/transforms-3/a8803832f2d24632b6707b6a074463a2/transformed/exoplayer-ui-2.17.1/res/layout/exo_styled_player_view.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/bg_round_rect_white_50.xml" value="0.219" />
         <entry key="app/src/main/res/drawable/bg_rounded_rectangle_white_corner_rounded.xml" value="0.219" />
+        <entry key="app/src/main/res/drawable/bottom_gradient_music_corner.xml" value="0.192" />
         <entry key="app/src/main/res/drawable/circular_progress.xml" value="0.219" />
         <entry key="app/src/main/res/drawable/gradient_transparent_middle.xml" value="0.219" />
         <entry key="app/src/main/res/drawable/ic_cross_white.xml" value="0.219" />
@@ -20,7 +21,10 @@
         <entry key="app/src/main/res/drawable/ic_exo_icon_pause.xml" value="0.219" />
         <entry key="app/src/main/res/drawable/ic_exo_icon_play.xml" value="0.219" />
         <entry key="app/src/main/res/drawable/ic_exo_icon_rewind.xml" value="0.219" />
+        <entry key="app/src/main/res/drawable/ic_heart.xml" value="0.219" />
         <entry key="app/src/main/res/drawable/ic_music.xml" value="0.219" />
+        <entry key="app/src/main/res/drawable/ic_reactions_liked.xml" value="0.219" />
+        <entry key="app/src/main/res/drawable/ic_story_share.xml" value="0.219" />
         <entry key="app/src/main/res/drawable/ic_views.xml" value="0.219" />
         <entry key="app/src/main/res/drawable/ic_volume_off_grey_24dp.xml" value="0.219" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.31567028985507245" />

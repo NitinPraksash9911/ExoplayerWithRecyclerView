@@ -7,9 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.nitin.viewpagertest2.R
 import com.nitin.viewpagertest2.data.Music
 import com.nitin.viewpagertest2.databinding.ViewPagerFragmentBinding
@@ -20,19 +18,16 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ViewPagerFragment : Fragment(R.layout.view_pager_fragment) {
 
-    lateinit var songs: List<MediaDescriptionCompat>
 
     private lateinit var scrollListener: RecyclerViewScrollListener
 
 
-    lateinit var musicAdapter: MusicAdapter
+    private lateinit var musicAdapter: MusicAdapter
     lateinit var binding: ViewPagerFragmentBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = ViewPagerFragmentBinding.bind(view)
-        fetchMediaData()
-
         setAdapter()
 
     }
@@ -47,9 +42,11 @@ class ViewPagerFragment : Fragment(R.layout.view_pager_fragment) {
 
         binding.recyclerView.adapter = musicAdapter
 
-        binding.recyclerView.layoutManager
         PagerSnapHelper().attachToRecyclerView(binding.recyclerView)
-        musicAdapter.submitList(songs)
+
+        musicAdapter.submitList(getMusicList().map {
+            it.asMetaDataDesc()
+        })
 
         scrollListener = object : RecyclerViewScrollListener() {
             override fun onItemIsFirstVisibleItem(index: Int) {
@@ -65,18 +62,15 @@ class ViewPagerFragment : Fragment(R.layout.view_pager_fragment) {
     }
 
 
-    fun fetchMediaData() {
-        val allSongs = setMusicList()
-        songs = allSongs.map { song ->
-            MediaDescriptionCompat.Builder()
-                .setDescription(song.subTitle)
-                .setMediaId(song.mediaId)
-                .setMediaUri(Uri.parse(song.songUrl))
-                .setTitle(song.title)
-                .setIconUri(Uri.parse(song.defaultThumbnail))
-                .build()
+    private fun Music.asMetaDataDesc(): MediaDescriptionCompat {
+        return MediaDescriptionCompat.Builder()
+            .setDescription(this.subTitle)
+            .setMediaId(this.mediaId)
+            .setMediaUri(Uri.parse(this.songUrl))
+            .setTitle(this.title)
+            .setIconUri(Uri.parse(this.defaultThumbnail))
+            .build()
 
-        }
     }
 
     override fun onPause() {
@@ -84,9 +78,6 @@ class ViewPagerFragment : Fragment(R.layout.view_pager_fragment) {
         PlayerViewAdapter.pauseCurrentPlayingVideo()
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -94,7 +85,7 @@ class ViewPagerFragment : Fragment(R.layout.view_pager_fragment) {
     }
 
 
-    private fun setMusicList() = listOf<Music>(
+    private fun getMusicList() = listOf<Music>(
         Music(
             "1",
             "https://images.pexels.com/photos/4725133/pexels-photo-4725133.jpeg",
