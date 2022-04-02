@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.exoplayer2.Player
 import com.nitin.viewpagertest2.databinding.MusicItemBinding
 import com.nitin.viewpagertest2.utils.PlayerStateCallback
-import com.nitin.viewpagertest2.utils.PlayerViewBindingAdapter
+import com.nitin.viewpagertest2.utils.PlayerViewAdapter
 
 const val TAG = "MusicAdapter"
 class MusicAdapter(
@@ -40,7 +40,7 @@ class MusicAdapter(
             musicItemBinding.root.setOnClickListener {
                 onItemClickListener(musicItemBinding.dataModel!!)
             }
-            musicItemBinding.crossIm
+            musicItemBinding.closeIconIV
                 .setOnClickListener {
                     onItemClose.invoke()
                 }
@@ -59,7 +59,7 @@ class MusicAdapter(
 
     override fun onViewRecycled(holder: MusicViewHolder) {
         val position = holder.absoluteAdapterPosition
-        PlayerViewBindingAdapter.releaseRecycledPlayers(position)
+        PlayerViewAdapter.releaseRecycledPlayers(position)
         super.onViewRecycled(holder)
     }
 

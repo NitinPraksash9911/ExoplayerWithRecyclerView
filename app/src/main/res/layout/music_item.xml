@@ -24,10 +24,11 @@
         android:layout_height="match_parent">
 
 
-        <com.google.android.exoplayer2.ui.PlayerView
+        <com.google.android.exoplayer2.ui.StyledPlayerView
             android:id="@+id/item_video_exoplayer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:animateLayoutChanges="true"
             app:controller_layout_id="@layout/exoplayer_control_view"
             app:item_index="@{index}"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -49,7 +50,7 @@
             android:layout_height="wrap_content"
             android:indeterminate="true"
             android:visibility="gone"
-            app:indicatorColor="@color/white"
+            app:indicatorColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -57,33 +58,32 @@
             app:trackColor="@color/live_red" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/cross_im"
+            android:id="@+id/closeIcon_IV"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="20dp"
-            android:src="@drawable/ic_cross_white"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:padding="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_cross_white"
+            app:tint="@android:color/white" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/header_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_marginStart="@dimen/_12ssp"
+            android:layout_marginTop="42dp"
             android:layout_marginEnd="8dp"
             android:ellipsize="end"
             android:gravity="end"
             android:maxLines="1"
-            android:text="@{dataModel.description}"
-            android:textColor="@color/white"
+            android:textColor="@android:color/white"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/cross_im"
+            app:layout_constraintStart_toEndOf="@id/closeIcon_IV"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Song Name" />
+            tools:text="name of the Artist on Platform name" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/songNameTv"
@@ -96,8 +96,8 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@{dataModel.title}"
-            android:textColor="@color/white"
-            android:textSize="25sp"
+            android:textColor="@android:color/white"
+            android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -117,15 +117,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/reactionLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bottom_gradient_music_corner"
+            android:paddingBottom="@dimen/_20sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:background="@drawable/bottom_gradient_music_corner"
-            >
+            app:layout_constraintRight_toRightOf="parent">
 
             <LinearLayout
                 android:id="@+id/likeContainer"
@@ -145,7 +146,7 @@
                     android:id="@+id/likeImage"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginBottom="@dimen/_4sdp"
                     android:src="@drawable/ic_reactions_liked"
                     tools:src="@drawable/ic_reactions_liked" />
 
@@ -250,7 +251,7 @@
                     android:id="@+id/shareText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="share"
+                    android:text="Share"
                     android:textColor="@android:color/white"
                     android:textSize="13sp"
                     tools:text="Share" />

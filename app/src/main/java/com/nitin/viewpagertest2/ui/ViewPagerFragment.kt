@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import com.nitin.viewpagertest2.R
 import com.nitin.viewpagertest2.data.Music
 import com.nitin.viewpagertest2.databinding.ViewPagerFragmentBinding
-import com.nitin.viewpagertest2.utils.PlayerViewBindingAdapter
+import com.nitin.viewpagertest2.utils.PlayerViewAdapter
 import com.nitin.viewpagertest2.utils.RecyclerViewScrollListener
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -37,6 +37,7 @@ class ViewPagerFragment : Fragment(R.layout.view_pager_fragment) {
         binding.recyclerView.setHasFixedSize(true)
 
         binding.recyclerView.adapter = musicAdapter
+        binding.recyclerView.addItemDecoration(CirclePagerIndicatorDecoration())
 
         PagerSnapHelper().attachToRecyclerView(binding.recyclerView)
 
@@ -51,7 +52,7 @@ class ViewPagerFragment : Fragment(R.layout.view_pager_fragment) {
                 Log.d("visible item index", index.toString())
                 // play just visible item
                 if (index != -1) {
-                    PlayerViewBindingAdapter.playIndexThenPausePreviousPlayer(index)
+                    PlayerViewAdapter.playIndexThenPausePreviousPlayer(index)
                 }
             }
         }
@@ -70,12 +71,12 @@ class ViewPagerFragment : Fragment(R.layout.view_pager_fragment) {
 
     override fun onPause() {
         super.onPause()
-        PlayerViewBindingAdapter.pauseCurrentPlayingVideo()
+        PlayerViewAdapter.pauseCurrentPlayingVideo()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        PlayerViewBindingAdapter.releaseAllPlayers()
+        PlayerViewAdapter.releaseAllPlayers()
     }
 
     private fun getMusicList() = listOf<Music>(
@@ -109,5 +110,5 @@ class ViewPagerFragment : Fragment(R.layout.view_pager_fragment) {
             "Mp4 Video"
         ),
 
-    )
+        )
 }

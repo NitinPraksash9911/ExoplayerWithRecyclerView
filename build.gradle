@@ -17,13 +17,8 @@ plugins {
     id 'org.jlleitschuh.gradle.ktlint' version '10.2.1'
 }
 
-apply (from: teamPropsFile('git-hooks.gradle') )
-apply (from: teamPropsFile('static-analysis.gradle') )
+//apply (from: 'static-analysis.gradle')
 
-def teamPropsFile(propsFile) {
-    def teamPropsDir = file('team-props')
-    return new File(teamPropsDir, propsFile)
-}
 
 task clean(type: Delete) {
     delete rootProject.buildDir

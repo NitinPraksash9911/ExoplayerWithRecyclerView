@@ -1,0 +1,10 @@
+apply(from: teamPropsFile('git-hooks.gradle'))
+
+subprojects {
+    apply(from: teamPropsFile('detekt-ktlint.gradle'))
+}
+
+def teamPropsFile(propsFile) {
+    def teamPropsDir = file('team-props')
+    return new File(teamPropsDir, propsFile)
+}

@@ -3,7 +3,8 @@
 echo "Running static analysis..."
 
 # # Format code using KtLint, then run Detekt and KtLint static analysis before committing
-./gradlew detekt ktlintCheck --daemon
+#./gradlew detekt ktlintCheck --daemon
+./gradlew detekt --daemon
 
 #./gradlew app:ktlintFormat : we also can format the while committing but it will again change the code then we have to add new commit
 

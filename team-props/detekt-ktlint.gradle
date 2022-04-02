@@ -1,0 +1,32 @@
+apply {
+    plugin("io.gitlab.arturbosch.detekt")
+    plugin("org.jlleitschuh.gradle.ktlint")
+}
+
+ktlint {
+    debug.set(false)
+    verbose.set(true)
+    android.set(false)
+    outputToConsole.set(true)
+    ignoreFailures.set(true)
+    disabledRules = ["no-wildcard-imports"]
+//    additionalEditorconfigFile = file("$rootDir/.editorconfig")
+    baseline = file("$rootDir/config/ktlint/ktlint-baseline.xml")
+//    enableExperimentalRules.set(true)
+    filter {
+        exclude("**/generated/**")
+        include("**/kotlin/**")
+    }
+}
+
+detekt {
+    buildUponDefaultConfig = true // preconfigure defaults
+    allRules = false // activate all available (even unstable) rules.
+    config = files("$rootDir/config/detekt/detekt.yml")
+    // point to your custom config defining rules to run, overwriting default behavior
+    //warnings listed in the baseline file will be ignored! You can update the baseline file at any time by re-running ./gradlew detektBaseline.
+    baseline = file("$rootDir/config/detekt/baseline.xml")
+}
+
+classpath "org.jlleitschuh.gradle:ktlint-gradle:10.2.1"
+classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.19.0"
